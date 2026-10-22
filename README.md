@@ -14,10 +14,33 @@ npm run dev     # http://localhost:3000
 ```
 
 ```bash
-npm run build      # production build
+npm run build      # static export into out/
 npm run lint       # eslint
 npm run typecheck  # tsc --noEmit
 ```
+
+## Deployment
+
+The site is a static export hosted on GitHub Pages at
+<https://salesteam-create.github.io/gymsupply/>.
+
+`.github/workflows/deploy-pages.yml` lints, typechecks, builds and publishes on
+every push to the default branch, and can also be run by hand from the Actions
+tab.
+
+Pages serves a project site from `/<repo>`, so the build needs that prefix.
+`next.config.ts` reads it from `GITHUB_REPOSITORY` when `GITHUB_PAGES=true`,
+which only the workflow sets. Local builds and `npm run dev` stay at the root.
+To reproduce the deployed build:
+
+```bash
+GITHUB_PAGES=true GITHUB_REPOSITORY=salesteam-create/gymsupply npm run build
+```
+
+Because `output: "export"` is set, this project cannot use server-side
+rendering, route handlers or middleware. Adding a backend for the contact form
+means either moving off Pages or calling a third-party endpoint from the
+browser.
 
 ## Layout
 
@@ -67,3 +90,6 @@ to the example zones through `getPlanZones` in `lib/planner.ts`.
   `[ORG.NR]`, `[Kunde, sted]`, `[KUNDEBILDE]` and `[PROSJEKTBILDE 1-3]`.
 - The contact form has no backend. `handleSubmit` in
   `components/sections/contact.tsx` only switches to the confirmation state.
+- The header shows every nav link at once and is sticky, so on a narrow phone
+  it wraps to three rows and takes up a lot of the screen. It needs a proper
+  mobile menu.
