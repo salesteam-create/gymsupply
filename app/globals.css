@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@theme {
+  /* Dark ground */
+  --color-ink: #0b0b0f;
+  --color-ink-raised: #16151f;
+  --color-ink-sunken: #121119;
+  --color-ink-active: #1b1533;
+  --color-tile: #241a57;
+  --color-chip: #24222f;
+
+  /* Brand purple */
+  --color-brand: #5a2ee5;
+  --color-brand-bright: #7149ff;
+  --color-brand-light: #9c82ff;
+  --color-brand-pale: #dcd4ff;
+
+  /* Light ground */
+  --color-paper: #ffffff;
+  --color-paper-raised: #f4f3f7;
+  --color-paper-line: #e6e4ec;
+
+  /* Text */
+  --color-body: #55535e;
+  --color-muted: #c4c2cc;
+  --color-dim: #a9a6b5;
+  --color-line: #3a3850;
+
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+
+  --container-shell: 1320px;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/*
+ * Signature idioms of the Gym Supply look. Everything in the design leans
+ * right: buttons and tiles are skewed, with the label counter-skewed back
+ * upright. Keep the two halves in sync when changing an angle.
+ */
+
+.skew-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 0;
+  background: var(--color-brand);
+  color: var(--color-paper);
+  text-decoration: none;
+  cursor: pointer;
+  transform: skewX(-14deg);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.skew-cta:hover {
+  background: var(--color-brand-bright);
+  transform: skewX(-14deg) translateY(-2px);
+}
+
+.skew-cta__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  transform: skewX(14deg);
+}
+
+.skew-tile {
+  transform: skewX(-12deg);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.skew-tile:hover {
+  transform: skewX(-12deg) translateY(-6px);
+}
+
+.skew-tile__label {
+  transform: skewX(12deg);
+}
+
+/* The short accent bar that opens every section. Size it with w-* / h-*. */
+.skew-rule {
+  display: block;
+  background: var(--color-brand);
+  transform: skewX(-20deg);
+}
+
+.lift-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lift-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgb(90 46 229 / 0.18);
+}
+
+/* Oversized outlined wordmark sitting behind a section. */
+.ghost {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.14);
+}
+
+.ghost--on-paper {
+  -webkit-text-stroke: 1.5px rgb(11 11 15 / 0.09);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-light);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skew-cta,
+  .skew-tile,
+  .lift-card {
+    transition: none;
+  }
+
+  .skew-cta:hover {
+    transform: skewX(-14deg);
+  }
+
+  .skew-tile:hover {
+    transform: skewX(-12deg);
+  }
+
+  .lift-card:hover {
+    transform: none;
+  }
+}
