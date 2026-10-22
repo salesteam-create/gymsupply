@@ -1,21 +1,24 @@
 import { GhostWord } from "@/components/ui/ghost-word";
+import {
+  CorporateGymIllustration,
+  HomeGymIllustration,
+  PublicSectorIllustration,
+} from "@/components/ui/illustrations";
 import { SkewCta } from "@/components/ui/skew-cta";
 import { SkewRule } from "@/components/ui/skew-rule";
 
+/*
+ * To use a real delivery photo instead of the illustration, drop the file in
+ * public/projects/ and swap `Illustration` for:
+ *   image: "/projects/bedriftsgym.jpg"
+ * then render it with a plain <img> (the static export runs without the image
+ * optimiser). Keep the 420px frame so the row stays aligned.
+ */
 const projects = [
-  { title: "Bedriftsgym", placeholder: "[PROSJEKTBILDE 1]", flip: false },
-  { title: "Offentlig sektor", placeholder: "[PROSJEKTBILDE 2]", flip: true },
-  { title: "Hjemmegym", placeholder: "[PROSJEKTBILDE 3]", flip: false },
+  { title: "Bedriftsgym", client: "[Kunde, sted]", Illustration: CorporateGymIllustration },
+  { title: "Offentlig sektor", client: "[Kunde, sted]", Illustration: PublicSectorIllustration },
+  { title: "Hjemmegym", client: "[Kunde, sted]", Illustration: HomeGymIllustration },
 ];
-
-/** Alternating diagonal hatch standing in for the project photography. */
-function hatch(flip: boolean) {
-  const [a, b] = flip ? ["#23212F", "#1A1924"] : ["#1A1924", "#23212F"];
-
-  return {
-    background: `repeating-linear-gradient(135deg, ${a} 0 18px, ${b} 18px 36px)`,
-  };
-}
 
 export function Projects() {
   return (
@@ -34,19 +37,14 @@ export function Projects() {
         </p>
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-          {projects.map((project) => (
-            <figure key={project.title} className="m-0">
-              <div
-                style={hatch(project.flip)}
-                className="flex h-[420px] items-center justify-center text-[13px] tracking-[0.08em] text-dim"
-              >
-                {project.placeholder}
+          {projects.map(({ title, client, Illustration }) => (
+            <figure key={title} className="m-0">
+              <div className="h-[420px] overflow-hidden">
+                <Illustration />
               </div>
               <figcaption className="px-1 pt-[22px]">
-                <div className="text-[17px] font-extrabold italic uppercase">
-                  {project.title}
-                </div>
-                <div className="mt-1 text-[13px] text-body">[Kunde, sted]</div>
+                <div className="text-[17px] font-extrabold italic uppercase">{title}</div>
+                <div className="mt-1 text-[13px] text-body">{client}</div>
                 <SkewRule className="mt-3 h-1 w-[26px]" />
               </figcaption>
             </figure>

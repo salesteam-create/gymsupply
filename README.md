@@ -52,7 +52,7 @@ app/
 components/
   layout/               site header and footer
   sections/             one file per band of the page
-  ui/                   SkewCta, SkewRule, GhostWord, icons
+  ui/                   SkewCta, SkewRule, GhostWord, icons, illustrations
   planner-provider.tsx  shared segment + room size state
 lib/
   planner.ts            segments, room sizes, zones and the plan matrix
@@ -84,10 +84,27 @@ and room size live in `PlannerProvider` above both. The segment drives the hero
 intro line, the hero CTA label and the planner; segment plus room size resolve
 to the example zones through `getPlanZones` in `lib/planner.ts`.
 
+## Artwork
+
+The project cards and the customer portrait use SVG illustrations from
+`components/ui/illustrations.tsx`, drawn in the same flat geometric style as
+the hero rack. They are stand-ins, and deliberately not photographs: the
+projects section claims these are rooms we delivered, so a stock photo there
+would misrepresent the work. The portrait is a monogram for the same reason,
+rather than a stranger's face under a named testimonial.
+
+To use a real delivery photo, put the file in `public/projects/` and swap the
+`Illustration` entry in `components/sections/projects.tsx` for an `<img>`
+pointing at it. Keep the 420px frame so the row stays aligned. The static
+export runs without the image optimiser, so a plain `<img>` is fine.
+
 ## Still to do
 
 - Replace the content placeholders: `[TELEFON]`, `[E-POST]`, `[ADRESSE]`,
-  `[ORG.NR]`, `[Kunde, sted]`, `[KUNDEBILDE]` and `[PROSJEKTBILDE 1-3]`.
+  `[ORG.NR]` and `[Kunde, sted]`.
+- Swap the illustrations for real delivery photos and a real portrait once
+  they are available, and confirm the testimonial is one you have permission
+  to publish.
 - The contact form has no backend. `handleSubmit` in
   `components/sections/contact.tsx` only switches to the confirmation state.
 - The header shows every nav link at once and is sticky, so on a narrow phone

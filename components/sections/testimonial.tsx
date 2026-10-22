@@ -1,5 +1,6 @@
 import { GhostWord } from "@/components/ui/ghost-word";
 import { QuoteMarkIcon } from "@/components/ui/icons";
+import { CustomerMonogram } from "@/components/ui/illustrations";
 import { SkewRule } from "@/components/ui/skew-rule";
 
 export function Testimonial() {
@@ -17,8 +18,8 @@ export function Testimonial() {
           <div className="relative h-80 min-w-0 flex-[0_1_380px] bg-brand">
             {/* Offset outline frame behind the portrait. */}
             <div className="absolute -bottom-[18px] -right-[18px] left-[18px] top-[18px] border-2 border-brand" />
-            <div className="absolute inset-0 flex items-center justify-center text-[13px] tracking-[0.08em] text-brand-pale">
-              [KUNDEBILDE]
+            <div className="absolute inset-0 overflow-hidden">
+              <CustomerMonogram initials="KN" />
             </div>
           </div>
 
