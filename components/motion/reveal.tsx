@@ -20,13 +20,11 @@ const STEP_MS = 70;
 /**
  * Fades and lifts content as it scrolls into view.
  *
- * Three rules keep this from costing more than it gives:
- *
- * 1. Nothing is hidden in the markup. The hidden state is applied by this
- *    effect, so if the script never runs the content is simply visible.
- * 2. Anything already on screen when the effect runs is skipped entirely.
- *    Hiding something the visitor is already looking at causes a flash and
- *    can invalidate the LCP element.
+ * 1. Nothing is hidden in the markup, so if the script never runs the content
+ *    is simply visible.
+ * 2. Anything already on screen is skipped. Hiding something the visitor is
+ *    looking at causes a flash and can invalidate the LCP element, so this is
+ *    never used above the fold.
  * 3. Under prefers-reduced-motion nothing is touched at all.
  */
 export function Reveal({ children, stagger = false, as = "div", className }: RevealProps) {
@@ -35,12 +33,8 @@ export function Reveal({ children, stagger = false, as = "div", className }: Rev
   useEffect(() => {
     const element = container.current;
     if (!element) return;
-
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    // Already visible: leave it alone rather than hiding and re-showing it.
-    const box = element.getBoundingClientRect();
-    if (box.top < window.innerHeight) return;
+    if (element.getBoundingClientRect().top < window.innerHeight) return;
 
     const targets: HTMLElement[] = stagger
       ? (Array.from(element.children) as HTMLElement[])
@@ -61,12 +55,10 @@ export function Reveal({ children, stagger = false, as = "div", className }: Rev
       },
       { rootMargin: "0px 0px -12% 0px" },
     );
-
     observer.observe(element);
 
     return () => {
       observer.disconnect();
-      // Leave nothing hidden behind if this unmounts mid-flight.
       targets.forEach((target) => {
         delete target.dataset.reveal;
         target.style.transitionDelay = "";
@@ -75,7 +67,6 @@ export function Reveal({ children, stagger = false, as = "div", className }: Rev
   }, [stagger]);
 
   const Tag = as;
-
   return (
     <Tag ref={container as never} className={className}>
       {children}

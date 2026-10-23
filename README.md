@@ -1,214 +1,98 @@
 # Gym Supply
 
-Landing page for Gym Supply, built from the design prototype in
-[this canvas](https://claude.ai/code/artifact/3250856a-edb7-4cf8-b0b3-ca8d7a83ccd1).
-
-Norwegian (`nb`) content, dark ground with a purple accent, heavy italic Poppins
-headings and the skewed buttons and tiles that carry the brand.
-
-## Running it
+Marketing site for Gym Supply AS, Stavanger. Next.js App Router, TypeScript,
+Tailwind v4, exported as static files and hosted on GitHub Pages.
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000
-```
-
-```bash
+npm run dev        # http://localhost:3000
 npm run build      # static export into out/
-npm run lint       # eslint
-npm run typecheck  # tsc --noEmit
+npm run lint
+npm run typecheck
 ```
 
-## Deployment
+## Pages
 
-The site is a static export hosted on GitHub Pages at
-<https://salesteam-create.github.io/gymsupply/>.
+| Route | File |
+|---|---|
+| `/` | `app/page.tsx` |
+| `/tjenester` | `app/tjenester/page.tsx` |
+| `/prosjekter` | `app/prosjekter/page.tsx` |
+| `/om-oss` | `app/om-oss/page.tsx` |
+| `/kontakt` | `app/kontakt/page.tsx` |
 
-`.github/workflows/deploy-pages.yml` lints, typechecks, builds and publishes on
-every push to the default branch, and can also be run by hand from the Actions
-tab.
+Header and footer are shared from `app/layout.tsx`. Navigation lives in
+`lib/nav.ts`; the Løsninger and Tjenester dropdowns deep-link to anchors that
+exist today, so when the segment landing pages are built only those hrefs
+change.
 
-Pages serves a project site from `/<repo>`, so the build needs that prefix.
-`next.config.ts` reads it from `GITHUB_REPOSITORY` when `GITHUB_PAGES=true`,
-which only the workflow sets. Local builds and `npm run dev` stay at the root.
-To reproduce the deployed build:
+## Brand
 
-```bash
-GITHUB_PAGES=true GITHUB_REPOSITORY=salesteam-create/gymsupply npm run build
+Colours in `app/globals.css` were sampled from the supplied logo, not matched
+by eye. Lime is the weighted mean of 1054 saturated pixels.
+
+| Token | Value |
+|---|---|
+| `lime` | `#D4DB4A` |
+| `charcoal` | `#20211F` |
+| `paper` | `#F5F3EE` |
+| `stone` | `#656661` |
+| `grey` (wordmark) | `#5C5C5E` |
+
+Measured contrast:
+
+```
+lime on charcoal   10.80:1  ok
+lime on warm white  1.35:1  FAILS
+charcoal on paper  14.58:1  ok
+stone on paper      5.22:1  ok
 ```
 
-Because `output: "export"` is set, this project cannot use server-side
-rendering, route handlers or middleware. Adding a backend for the contact form
-means either moving off Pages or calling a third-party endpoint from the
-browser.
+**Lime can never carry text or a hairline on a light surface.** On the warm
+white sections it only works as a filled block with charcoal text on top,
+which is what `Button variant="primary"` does. Everything else on light
+surfaces uses charcoal or stone.
 
-## Layout
+Type is one ramp: `text-display`, `text-h2`, `text-h3`, `text-lead`,
+`text-eyebrow`. Rhythm is `py-section` and `px-gutter`. Use those rather than
+per-section `clamp()` values.
 
-```
-app/
-  layout.tsx            Poppins, metadata, html lang="nb"
-  page.tsx              section order for the home page
-  globals.css           design tokens (@theme) + the skew/ghost idioms
-components/
-  layout/               site header and footer
-  sections/             one file per band of the page
-  ui/                   SkewCta, SkewRule, GhostWord, icons, illustrations
-  planner-provider.tsx  shared segment + room size state
-lib/
-  planner.ts            segments, room sizes, zones and the plan matrix
-```
+## Images
 
-## Conventions
-
-Colours, fonts and the container width live as Tailwind v4 tokens in
-`app/globals.css`, so use `bg-ink`, `text-brand-light`, `max-w-shell` rather
-than raw hex values.
-
-Three idioms repeat across the page and have their own classes in `globals.css`:
-
-- `.skew-cta` / `.skew-cta__label` — the slanted button. The outer element
-  leans left, the label leans back so the text reads upright. Change both
-  angles together.
-- `.skew-tile` / `.skew-tile__label` — the same trick at a shallower angle for
-  the audience tiles and planner chips.
-- `.ghost` — the oversized outlined wordmark behind a section. Add
-  `.ghost--on-paper` on the white sections.
-
-Sections are server components by default. Only the three that hold state are
-client components: `hero.tsx`, `planner.tsx` and `contact.tsx`.
-
-## State
-
-The hero audience tiles and the planner chips set the same value, so segment
-and room size live in `PlannerProvider` above both. The segment drives the hero
-intro line, the hero CTA label and the planner; segment plus room size resolve
-to the example zones through `getPlanZones` in `lib/planner.ts`.
-
-## Artwork
-
-The project cards and the customer portrait use SVG illustrations from
-`components/ui/illustrations.tsx`, drawn in the same flat geometric style as
-the hero rack. They are stand-ins, and deliberately not photographs: the
-projects section claims these are rooms we delivered, so a stock photo there
-would misrepresent the work. The portrait is a monogram for the same reason,
-rather than a stranger's face under a named testimonial.
-
-To use a real delivery photo, put the file in `public/projects/` and swap the
-`Illustration` entry in `components/sections/projects.tsx` for an `<img>`
-pointing at it. Keep the 420px frame so the row stays aligned. The static
-export runs without the image optimiser, so a plain `<img>` is fine.
-
-## Responsive behaviour
-
-The full nav shows from `lg` (1024px) up. Below that the header collapses to a
-wordmark and a menu button, which keeps the sticky bar at 76px on a phone
-instead of wrapping to three rows. The panel closes on link tap and on Escape.
-
-Section padding steps down at `sm`, and the project cards shrink from 420px to
-260px tall, so the page is about a third shorter on a phone.
-
-`scroll-padding-top` in `globals.css` keeps anchor jumps clear of the sticky
-header. If the header height changes, change that value too.
-
-Checked at 320, 360, 390, 414, 768, 1024, 1280 and 1440px: no horizontal
-overflow, and every tap target is at least 44px at phone and tablet widths.
-
-## Design system
-
-`app/globals.css` holds one type ramp (`text-display`, `text-h2`, `text-h3`,
-`text-lead`, `text-eyebrow`) and one rhythm pair (`py-section`, `px-gutter`).
-Use those rather than per-section `clamp()` values, so headings stay on the
-same steps across the page.
-
-Each section opens the same way: a `section-seam` rule, an eyebrow, the H2,
-then a lead paragraph capped around 46-52 characters per line.
-
-Watermarks (`.ghost`) sit at `z-index: 0` and content carries `.above-ghost`,
-so a watermark can never land on top of text.
+Every image is a slot. `components/ui/media.tsx` renders the photo when `src`
+is set and a charcoal panel with the brand mark when it is not, reserving the
+same space either way so adding a photo shifts nothing. `docs/images.md` lists
+each slot and where to set it.
 
 ## Motion
 
-`components/motion/reveal.tsx` is a small IntersectionObserver wrapper. Three
-rules keep it from costing more than it gives:
-
-1. Nothing is hidden in the markup. The effect applies the hidden state, so if
-   the script never runs the content is simply visible.
-2. Anything already on screen when the effect runs is skipped. Hiding
-   something the visitor is already looking at causes a flash and can
-   invalidate the LCP element, so the hero has no reveal at all.
-3. Under `prefers-reduced-motion: reduce` nothing is hidden, moved or
-   transitioned.
-
-With `stagger`, `Reveal` must be the element that directly holds the items.
-Use the `as` prop (`as="ol"`) rather than nesting a list inside it, or the
-stagger applies to one block instead of each item.
-
-Hover lifts sit behind `@media (hover: hover)`. Without that guard `:hover`
-latches after a tap and leaves a tile raised on touch devices.
-
-The planner result carries `.plan-swap`, which animates only when the
-selection actually changes, so the swap is noticed. That is the one piece of
-motion here that carries information rather than decoration.
-
-This replaced GSAP and ScrollTrigger, which cost 50.7KB gzipped (around a
-fifth of the page's JavaScript) to fade three groups of elements, and hid the
-H1 after first paint. Reintroduce it if something genuinely needs timeline
-control; simple reveals do not.
-
-## Business facts
-
-`lib/site.ts` holds the details used in metadata and structured data. The
-address and organisation number come from the public company register. The
-company states it was established in 2012; the register records registration
-in 2013, so confirm which to publish.
-
-Structured data is `LocalBusiness` only. It carries no ratings, reviews or
-prices, because none are verified.
-
-## Contact details and trust content
-
-`lib/site.ts` and `lib/testimonials.ts` drive everything a visitor is shown
-about the business. Both follow the same rule: unverified content is omitted,
-never shown as a placeholder.
-
-- Set `business.phone` and `business.email` and working `tel:` and `mailto:`
-  links appear in the contact section and the footer. While they are null,
-  those routes render nothing at all.
-- Add an entry to `testimonials` and the references section appears. While the
-  list is empty the whole section is left out of the page.
-- Project captions only show a customer and place once `client` is set on the
-  entry in `components/sections/projects.tsx`.
-
-An empty frame or a `[PLACEHOLDER]` on a live page costs more trust than
-leaving the content out, which is why none of these render half-filled.
+`components/motion/reveal.tsx` is a small IntersectionObserver wrapper.
+Nothing is hidden in the markup, elements already on screen are skipped so the
+hero never flashes, and under `prefers-reduced-motion` nothing is touched.
+With `stagger`, `Reveal` must be the element holding the items — use `as="ol"`
+rather than nesting a list inside it.
 
 ## The enquiry form
 
-The form posts JSON to `NEXT_PUBLIC_FORM_ENDPOINT`. Until that is set it does
-not claim to have sent anything: it tells the visitor the form is not
-connected and points them at phone and email. Set the variable to a form
-service or CRM endpoint to make it live, then test a real submission.
+Posts JSON to `NEXT_PUBLIC_FORM_ENDPOINT`. Until that is set it does not claim
+to have sent anything: it says the form is not connected.
 
-Selections made in the planner are carried into the form, so a visitor does
-not answer the same question twice: the segment sets the project type and the
-room size fills the size field.
-
-Fields adapt to who is enquiring. A private buyer never sees the organisation
-field; business and public-sector buyers get it as a required field. That is
-six fields for a home gym enquiry and seven for an organisation.
+The planner on the home page passes its selection to the form through the URL
+(`/kontakt?segment=hjem&storrelse=l`), since the two are now separate pages.
+Fields adapt: a private buyer never sees the organisation field.
 
 ## Still to do
 
-- Supply the phone number and email address. `[TELEFON]` and `[E-POST]` appear
-  in the contact section and the footer.
-- Supply a real customer quote with permission to publish it, plus the name,
-  role and organisation. The testimonial is a labelled placeholder and must not
-  go live as it is.
-- Supply project names and locations for `[Kunde, sted]`.
-- Connect the enquiry form by setting `NEXT_PUBLIC_FORM_ENDPOINT`.
-- Confirm whether the founding year to publish is 2012 or 2013.
-- Swap the illustrations for real delivery photos and a real portrait once
-  they are available, and confirm the testimonial is one you have permission
-  to publish.
-- The contact form has no backend. `handleSubmit` in
-  `components/sections/contact.tsx` only switches to the confirmation state.
+- **Photographs.** Hero, four solution cards, process, team, service steps and
+  projects. Use real installations; the copy says these are rooms Gym Supply
+  delivered.
+- **Phone and email** in `lib/site.ts`. Until set, no `tel:` or `mailto:`
+  links render anywhere.
+- **Real projects** in `app/prosjekter/page.tsx`, with permission to name the
+  customer. The page shows categories until then and never presents an
+  unnamed card as a case study.
+- **A form endpoint.**
+- **Confirm the founding year**: the company states 2012, the register records
+  registration in 2013.
+- Segment landing pages for Bedriftsgym, Treningssentre, Offentlig sektor and
+  Hjemmegym, replacing the anchor links in `lib/nav.ts`.

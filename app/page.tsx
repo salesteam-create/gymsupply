@@ -1,29 +1,24 @@
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
 import { PlannerProvider } from "@/components/planner-provider";
-import { Contact } from "@/components/sections/contact";
+import { AboutTeaser } from "@/components/sections/about-teaser";
+import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
+import { Pillars } from "@/components/sections/pillars";
 import { Planner } from "@/components/sections/planner";
-import { Projects } from "@/components/sections/projects";
-import { Services } from "@/components/sections/services";
-import { Testimonial } from "@/components/sections/testimonial";
-import { testimonials } from "@/lib/testimonials";
-import { WhyUs } from "@/components/sections/why-us";
+import { Process } from "@/components/sections/process";
+import { Solutions } from "@/components/sections/solutions";
 
 export default function HomePage() {
   return (
-    <PlannerProvider>
-      <SiteHeader />
-      <main>
-        <Hero />
-        <Services />
+    <>
+      <Hero />
+      <Pillars />
+      <Solutions />
+      <Process />
+      <PlannerProvider>
         <Planner />
-        <Projects />
-        <WhyUs />
-        {testimonials.length > 0 ? <Testimonial /> : null}
-        <Contact />
-      </main>
-      <SiteFooter />
-    </PlannerProvider>
+      </PlannerProvider>
+      <AboutTeaser />
+      <FinalCta />
+    </>
   );
 }

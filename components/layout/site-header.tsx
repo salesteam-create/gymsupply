@@ -1,135 +1,196 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-import { SkewCta } from "@/components/ui/skew-cta";
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
+import { mainNav } from "@/lib/nav";
 
-const navLinks = [
-  { href: "#top", label: "Hjem" },
-  { href: "#tjenester", label: "Tjenester" },
-  { href: "#planlegger", label: "Planlegg gymmet" },
-  { href: "#prosjekter", label: "Prosjekter" },
-  { href: "#om", label: "Om oss" },
-];
-
-function Wordmark() {
+function Chevron({ open }: { open: boolean }) {
   return (
-    <a href="#top" className="flex min-h-11 flex-col justify-center gap-0.5 text-paper no-underline">
-      <span className="whitespace-nowrap text-[22px] font-black italic leading-none tracking-[0.01em] sm:text-[30px]">
-        GYM SUPPLY
-      </span>
-      <span className="skew-rule h-1 w-10 sm:w-14" />
-    </a>
-  );
-}
-
-/** Three bars that become a cross while the panel is open. */
-function MenuIcon({ open }: { open: boolean }) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-      <g stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-        {open ? (
-          <>
-            <line x1="5" y1="5" x2="19" y2="19" />
-            <line x1="19" y1="5" x2="5" y2="19" />
-          </>
-        ) : (
-          <>
-            <line x1="3" y1="7" x2="21" y2="7" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="17" x2="21" y2="17" />
-          </>
-        )}
-      </g>
+    <svg
+      viewBox="0 0 24 24"
+      className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 9l6 6 6-6" />
     </svg>
   );
 }
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [drawer, setDrawer] = useState(false);
+  const pathname = usePathname();
+  const navRef = useRef<HTMLDivElement>(null);
 
-  // The panel covers the page, so Escape needs to get out of it.
   useEffect(() => {
-    if (!open) return;
+    if (!openMenu && !drawer) return;
 
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpenMenu(null);
+        setDrawer(false);
+      }
+    }
+    function onClick(event: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenMenu(null);
+      }
     }
 
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [openMenu, drawer]);
+
+  const isCurrent = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href.split("#")[0]) && href !== "/#losninger";
 
   return (
-    <header className="sticky top-0 z-30 bg-ink/90 backdrop-blur-[10px]">
-      <nav
-        aria-label="Hovedmeny"
-        className="mx-auto flex max-w-shell items-center justify-between gap-4 px-5 py-4 sm:px-8 sm:py-5"
-      >
-        <Wordmark />
+    <header className="sticky top-0 z-50 border-b border-charcoal-line/70 bg-charcoal/95 text-paper backdrop-blur-md">
+      <div className="mx-auto flex max-w-shell items-center justify-between gap-6 px-gutter py-3.5">
+        <Logo />
 
-        {/* Full nav, wide screens only. */}
-        <div className="hidden items-center gap-[26px] text-sm font-semibold lg:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-paper no-underline hover:text-brand-light"
-            >
-              {link.label}
-            </a>
-          ))}
-          <SkewCta href="#kontakt" className="px-[22px] py-3">
-            Book befaring
-          </SkewCta>
+        <div ref={navRef} className="hidden items-center gap-1 lg:flex">
+          {mainNav.map((item) =>
+            item.children ? (
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => setOpenMenu(item.label)}
+                onMouseLeave={() => setOpenMenu(null)}
+              >
+                <button
+                  type="button"
+                  aria-expanded={openMenu === item.label}
+                  aria-haspopup="true"
+                  onClick={() =>
+                    setOpenMenu(openMenu === item.label ? null : item.label)
+                  }
+                  className="flex min-h-11 cursor-pointer items-center gap-1.5 border-0 bg-transparent px-3.5 text-[0.9375rem] font-medium text-paper transition-colors hover:text-lime"
+                >
+                  {item.label}
+                  <Chevron open={openMenu === item.label} />
+                </button>
+
+                {openMenu === item.label ? (
+                  <div className="absolute left-0 top-full w-[19rem] border border-charcoal-line bg-charcoal-soft p-2 shadow-2xl">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setOpenMenu(null)}
+                        className="block px-3.5 py-3 no-underline transition-colors hover:bg-charcoal"
+                      >
+                        <span className="block text-[0.9375rem] font-semibold text-paper">
+                          {child.label}
+                        </span>
+                        <span className="mt-0.5 block text-[0.8125rem] text-mist">
+                          {child.blurb}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpenMenu(null)}
+                aria-current={isCurrent(item.href) ? "page" : undefined}
+                className={`flex min-h-11 items-center px-3.5 text-[0.9375rem] font-medium no-underline transition-colors hover:text-lime ${
+                  isCurrent(item.href) ? "text-lime" : "text-paper"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
-          <div className="hidden min-[400px]:block">
-            <SkewCta href="#kontakt" withArrow={false} className="px-4 py-2.5 text-[13px]">
+        <div className="flex items-center gap-2">
+          <div className="hidden min-[420px]:block">
+            <Button href="/kontakt" className="px-5 py-2.5 text-sm">
               Book befaring
-            </SkewCta>
+            </Button>
           </div>
 
           <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-controls="mobilmeny"
-          aria-label={open ? "Lukk meny" : "Åpne meny"}
-          className="flex size-11 cursor-pointer items-center justify-center border-0 bg-transparent text-paper"
-        >
-          <MenuIcon open={open} />
+            type="button"
+            onClick={() => setDrawer((value) => !value)}
+            aria-expanded={drawer}
+            aria-controls="mobilmeny"
+            aria-label={drawer ? "Lukk meny" : "Åpne meny"}
+            className="flex size-11 cursor-pointer items-center justify-center border-0 bg-transparent text-paper lg:hidden"
+          >
+            <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+              <g stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                {drawer ? (
+                  <>
+                    <line x1="5" y1="5" x2="19" y2="19" />
+                    <line x1="19" y1="5" x2="5" y2="19" />
+                  </>
+                ) : (
+                  <>
+                    <line x1="3" y1="7" x2="21" y2="7" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="17" x2="21" y2="17" />
+                  </>
+                )}
+              </g>
+            </svg>
           </button>
         </div>
-      </nav>
+      </div>
 
-      {/* Collapsed menu. Hidden from assistive tech when closed. */}
       <div
         id="mobilmeny"
-        hidden={!open}
-        className="border-t border-line bg-ink px-5 pb-6 pt-2 lg:hidden"
+        hidden={!drawer}
+        className="border-t border-charcoal-line bg-charcoal px-gutter pb-7 pt-2 lg:hidden"
       >
         <ul className="m-0 flex list-none flex-col p-0">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center border-b border-line text-base font-semibold text-paper no-underline"
+          {mainNav.map((item) => (
+            <li key={item.label} className="border-b border-charcoal-line/70">
+              <Link
+                href={item.href}
+                onClick={() => setDrawer(false)}
+                className="flex min-h-[3.25rem] items-center text-base font-semibold text-paper no-underline"
               >
-                {link.label}
-              </a>
+                {item.label}
+              </Link>
+              {item.children ? (
+                <ul className="m-0 list-none pb-2 pl-4">
+                  {item.children.map((child) => (
+                    <li key={child.href}>
+                      <Link
+                        href={child.href}
+                        onClick={() => setDrawer(false)}
+                        className="flex min-h-11 items-center text-sm text-mist no-underline"
+                      >
+                        {child.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </li>
           ))}
         </ul>
-        <SkewCta
-          href="#kontakt"
-          className="mt-5 px-[22px] py-3"
-          onClick={() => setOpen(false)}
-        >
+        <Button href="/kontakt" onClick={() => setDrawer(false)} className="mt-6 w-full">
           Book befaring
-        </SkewCta>
+        </Button>
       </div>
     </header>
   );
