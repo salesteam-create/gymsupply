@@ -113,10 +113,58 @@ header. If the header height changes, change that value too.
 Checked at 320, 360, 390, 414, 768, 1024, 1280 and 1440px: no horizontal
 overflow, and every tap target is at least 44px at phone and tablet widths.
 
+## Design system
+
+`app/globals.css` holds one type ramp (`text-display`, `text-h2`, `text-h3`,
+`text-lead`, `text-eyebrow`) and one rhythm pair (`py-section`, `px-gutter`).
+Use those rather than per-section `clamp()` values, so headings stay on the
+same steps across the page.
+
+Each section opens the same way: a `section-seam` rule, an eyebrow, the H2,
+then a lead paragraph capped around 46-52 characters per line.
+
+Watermarks (`.ghost`) sit at `z-index: 0` and content carries `.above-ghost`,
+so a watermark can never land on top of text.
+
+## Motion
+
+`components/motion/reveal.tsx` wraps GSAP + ScrollTrigger. Content renders
+visible and `gsap.from` only hides it once the tween is built, so the page
+still reads if the script never runs. Everything is created inside a
+`gsap.context` and reverted on unmount, which also covers React Strict Mode's
+double mount. `gsap.matchMedia` means nothing moves and nothing is hidden
+under `prefers-reduced-motion: reduce`.
+
+## Business facts
+
+`lib/site.ts` holds the details used in metadata and structured data. The
+address and organisation number come from the public company register. The
+company states it was established in 2012; the register records registration
+in 2013, so confirm which to publish.
+
+Structured data is `LocalBusiness` only. It carries no ratings, reviews or
+prices, because none are verified.
+
+## The enquiry form
+
+The form posts JSON to `NEXT_PUBLIC_FORM_ENDPOINT`. Until that is set it does
+not claim to have sent anything: it tells the visitor the form is not
+connected and points them at phone and email. Set the variable to a form
+service or CRM endpoint to make it live, then test a real submission.
+
+Selections made in the planner are carried into the form, so a visitor does
+not answer the same question twice.
+
 ## Still to do
 
-- Replace the content placeholders: `[TELEFON]`, `[E-POST]`, `[ADRESSE]`,
-  `[ORG.NR]` and `[Kunde, sted]`.
+- Supply the phone number and email address. `[TELEFON]` and `[E-POST]` appear
+  in the contact section and the footer.
+- Supply a real customer quote with permission to publish it, plus the name,
+  role and organisation. The testimonial is a labelled placeholder and must not
+  go live as it is.
+- Supply project names and locations for `[Kunde, sted]`.
+- Connect the enquiry form by setting `NEXT_PUBLIC_FORM_ENDPOINT`.
+- Confirm whether the founding year to publish is 2012 or 2013.
 - Swap the illustrations for real delivery photos and a real portrait once
   they are available, and confirm the testimonial is one you have permission
   to publish.

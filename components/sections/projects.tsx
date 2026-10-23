@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/reveal";
 import { GhostWord } from "@/components/ui/ghost-word";
 import {
   CorporateGymIllustration,
@@ -47,16 +48,18 @@ export function Projects() {
         PROSJEKTER
       </GhostWord>
 
-      <div className="relative mx-auto max-w-shell px-5 pb-16 pt-16 sm:px-8 sm:pb-[104px] sm:pt-28">
-        <SkewRule className="mb-[18px] h-1.5 w-11" />
-        <h2 className="m-0 text-[clamp(38px,4.6vw,64px)] font-black italic uppercase leading-[1.02]">
-          Våre leveranser
-        </h2>
-        <p className="mb-10 mt-[18px] max-w-[520px] text-base leading-[1.7] text-body sm:mb-[52px]">
-          Et utvalg av treningsrom vi har levert og montert i regionen.
-        </p>
+      <div className="above-ghost mx-auto max-w-shell px-gutter py-section">
+        <div className="section-seam max-w-[46ch] pt-7">
+          <p className="m-0 text-eyebrow font-bold uppercase tracking-[0.18em] text-brand">
+            Prosjekter
+          </p>
+          <h2 className="mt-4 text-h2 font-black italic uppercase">Våre leveranser</h2>
+          <p className="mt-4 text-lead text-body">
+            Et utvalg av treningsrom vi har levert og montert i regionen.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+        <Reveal stagger className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
           {projects.map(({ title, client, Illustration, photo, photoAlt }) => (
             <figure key={title} className="m-0">
               <div className="h-[260px] overflow-hidden sm:h-[340px] lg:h-[420px]">
@@ -80,7 +83,7 @@ export function Projects() {
               </figcaption>
             </figure>
           ))}
-        </div>
+        </Reveal>
 
         <div className="mt-10 flex justify-center sm:mt-[52px]">
           <SkewCta href="#kontakt" className="px-7 py-4 text-sm">

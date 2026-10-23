@@ -3,7 +3,6 @@
 import { usePlanner } from "@/components/planner-provider";
 import { GhostWord } from "@/components/ui/ghost-word";
 import { SkewCta } from "@/components/ui/skew-cta";
-import { SkewRule } from "@/components/ui/skew-rule";
 import { getPlanTitle, getPlanZones, roomSizes, segments } from "@/lib/planner";
 
 const included = ["✓ Befaring", "✓ Levering", "✓ Montering", "+ Serviceavtale"];
@@ -18,13 +17,17 @@ export function Planner() {
         PLANLEGG
       </GhostWord>
 
-      <div className="relative mx-auto flex max-w-shell flex-wrap gap-10 px-5 py-16 sm:px-8 sm:py-28 lg:gap-14">
+      <div className="above-ghost mx-auto flex max-w-shell flex-wrap gap-10 px-gutter py-section lg:gap-14">
         <div className="flex min-w-0 flex-1 basis-[460px] flex-col gap-[22px]">
-          <SkewRule className="h-1.5 w-11" />
-          <h2 className="m-0 text-[clamp(38px,4.6vw,64px)] font-black italic uppercase leading-[1.02]">
-            Planlegg gymmet ditt
-          </h2>
-          <p className="m-0 max-w-[460px] text-[15px] leading-[1.7] text-muted">
+          <div className="section-seam pt-7">
+            <p className="m-0 text-eyebrow font-bold uppercase tracking-[0.18em] text-brand-light">
+              Planlegger
+            </p>
+            <h2 className="mt-4 text-h2 font-black italic uppercase">
+              Planlegg gymmet ditt
+            </h2>
+          </div>
+          <p className="m-0 max-w-[52ch] text-[15px] leading-[1.7] text-muted">
             Velg type og størrelse, så viser vi et eksempel på oppsett. Det endelige
             forslaget lager vi sammen etter befaring.
           </p>

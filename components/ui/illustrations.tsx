@@ -206,3 +206,77 @@ export function CustomerMonogram({ initials }: { initials: string }) {
     </svg>
   );
 }
+
+/**
+ * The hero composition. Taller and denser than the project scenes so it holds
+ * its own column instead of floating, and framed by its own panel.
+ */
+export function HeroScene({ className }: IllustrationProps) {
+  const ground = 470;
+
+  return (
+    <svg
+      viewBox="0 0 520 560"
+      preserveAspectRatio="xMidYMid slice"
+      className={`h-full w-full ${className ?? ""}`}
+      aria-hidden="true"
+    >
+      <rect width="520" height="560" fill="#13121C" />
+
+      {/* Accent field, cropped by the frame, to anchor the composition. */}
+      <path d="M520 86v300l-150 84V170z" fill="#1E1640" />
+      <rect x="370" y="86" width="150" height="5" fill={brand} />
+
+      {/* Back wall rhythm */}
+      <g stroke="#201F2C" strokeWidth="2">
+        {[64, 140, 216, 292, 368, 444].map((x) => (
+          <line key={x} x1={x} y1="40" x2={x} y2={ground} />
+        ))}
+      </g>
+
+      {/* Power rack */}
+      <path
+        d={`M150 ${ground}V104M350 ${ground}V104M150 104h200`}
+        stroke={white}
+        strokeWidth="9"
+        strokeLinecap="round"
+      />
+      <path
+        d={`M118 ${ground}h64M318 ${ground}h64`}
+        stroke={white}
+        strokeWidth="9"
+        strokeLinecap="round"
+      />
+      <g stroke={steel} strokeWidth="5">
+        <path d="M150 170h26M150 220h26M150 270h26M150 320h26M324 170h26M324 220h26M324 270h26M324 320h26" />
+      </g>
+
+      {/* Loaded bar across the rack */}
+      <line x1="68" y1="252" x2="432" y2="252" stroke={brandBright} strokeWidth="11" strokeLinecap="round" />
+      <rect x="86" y="206" width="22" height="92" rx="4" fill={brand} />
+      <rect x="58" y="222" width="17" height="60" rx="4" fill={brand} />
+      <rect x="392" y="206" width="22" height="92" rx="4" fill={brand} />
+      <rect x="426" y="222" width="17" height="60" rx="4" fill={brand} />
+
+      {/* Bench inside the rack */}
+      <rect x="196" y="382" width="124" height="14" rx="7" fill={white} />
+      <path
+        d={`M214 396v${ground - 396}M302 396v${ground - 396}`}
+        stroke={steel}
+        strokeWidth="7"
+        strokeLinecap="round"
+      />
+
+      {/* Floor */}
+      <line x1="0" y1={ground} x2="520" y2={ground} stroke="#3A3850" strokeWidth="5" />
+      <rect x="0" y={ground + 5} width="520" height="9" fill={brand} />
+
+      {/* Weight tree */}
+      <g>
+        <line x1="462" y1={ground} x2="462" y2="352" stroke={white} strokeWidth="7" strokeLinecap="round" />
+        <circle cx="462" cy="376" r="17" stroke={brand} strokeWidth="7" fill="none" />
+        <circle cx="462" cy="420" r="17" stroke={brand} strokeWidth="7" fill="none" />
+      </g>
+    </svg>
+  );
+}

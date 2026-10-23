@@ -29,6 +29,22 @@
   --font-sans: var(--font-poppins), system-ui, sans-serif;
 
   --container-shell: 1320px;
+
+  /* Type scale. One ramp for the whole page, so H2 and H3 differ by more
+     than weight and every section lands on the same steps. */
+  --text-display: clamp(2.5rem, 5.6vw, 5.25rem);
+  --text-display--line-height: 0.98;
+  --text-h2: clamp(1.875rem, 3.4vw, 3rem);
+  --text-h2--line-height: 1.05;
+  --text-h3: clamp(1.125rem, 1.3vw, 1.3125rem);
+  --text-h3--line-height: 1.25;
+  --text-lead: clamp(1rem, 1.1vw, 1.125rem);
+  --text-lead--line-height: 1.65;
+  --text-eyebrow: 0.8125rem;
+
+  /* Vertical rhythm. Sections share one value so the page has a beat. */
+  --spacing-section: clamp(4rem, 7vw, 6.5rem);
+  --spacing-gutter: clamp(1.25rem, 3.5vw, 2rem);
 }
 
 /* Anchor jumps must clear the sticky header. */
@@ -129,11 +145,35 @@ body {
   line-height: 1;
   white-space: nowrap;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.14);
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.07);
+  z-index: 0;
 }
 
 .ghost--on-paper {
-  -webkit-text-stroke: 1.5px rgb(11 11 15 / 0.09);
+  -webkit-text-stroke: 1.5px rgb(11 11 15 / 0.05);
+}
+
+/* Content always sits above the watermark. */
+.above-ghost {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hairline that marks the seam between two sections. */
+.section-seam {
+  position: relative;
+}
+
+.section-seam::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(80px, 12vw, 180px);
+  height: 4px;
+  background: var(--color-brand);
+  transform: skewX(-20deg);
+  transform-origin: left top;
 }
 
 :focus-visible {

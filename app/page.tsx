@@ -18,8 +18,8 @@ export default function HomePage() {
         <Services />
         <Planner />
         <Projects />
-        <Testimonial />
         <WhyUs />
+        <Testimonial />
         <Contact />
       </main>
       <SiteFooter />
