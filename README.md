@@ -128,12 +128,32 @@ so a watermark can never land on top of text.
 
 ## Motion
 
-`components/motion/reveal.tsx` wraps GSAP + ScrollTrigger. Content renders
-visible and `gsap.from` only hides it once the tween is built, so the page
-still reads if the script never runs. Everything is created inside a
-`gsap.context` and reverted on unmount, which also covers React Strict Mode's
-double mount. `gsap.matchMedia` means nothing moves and nothing is hidden
-under `prefers-reduced-motion: reduce`.
+`components/motion/reveal.tsx` is a small IntersectionObserver wrapper. Three
+rules keep it from costing more than it gives:
+
+1. Nothing is hidden in the markup. The effect applies the hidden state, so if
+   the script never runs the content is simply visible.
+2. Anything already on screen when the effect runs is skipped. Hiding
+   something the visitor is already looking at causes a flash and can
+   invalidate the LCP element, so the hero has no reveal at all.
+3. Under `prefers-reduced-motion: reduce` nothing is hidden, moved or
+   transitioned.
+
+With `stagger`, `Reveal` must be the element that directly holds the items.
+Use the `as` prop (`as="ol"`) rather than nesting a list inside it, or the
+stagger applies to one block instead of each item.
+
+Hover lifts sit behind `@media (hover: hover)`. Without that guard `:hover`
+latches after a tap and leaves a tile raised on touch devices.
+
+The planner result carries `.plan-swap`, which animates only when the
+selection actually changes, so the swap is noticed. That is the one piece of
+motion here that carries information rather than decoration.
+
+This replaced GSAP and ScrollTrigger, which cost 50.7KB gzipped (around a
+fifth of the page's JavaScript) to fade three groups of elements, and hid the
+H1 after first paint. Reintroduce it if something genuinely needs timeline
+control; simple reveals do not.
 
 ## Business facts
 

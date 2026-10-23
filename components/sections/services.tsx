@@ -49,8 +49,11 @@ export function Services() {
 
         {/* A sequence, not four interchangeable cards: one rule runs across
             the top of every step and the accent marks where each begins. */}
-        <Reveal stagger>
-        <ol className="m-0 mt-14 grid list-none gap-x-7 gap-y-10 p-0 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal
+          as="ol"
+          stagger
+          className="m-0 mt-14 grid list-none gap-x-7 gap-y-10 p-0 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {steps.map((step) => (
             <li key={step.number} className="relative border-t border-paper-line pt-7">
               <span className="absolute -top-px left-0 h-0.5 w-12 bg-brand" />
@@ -61,7 +64,6 @@ export function Services() {
               <p className="mt-3 text-sm leading-[1.7] text-body">{step.body}</p>
             </li>
           ))}
-        </ol>
         </Reveal>
       </div>
     </section>

@@ -1,6 +1,5 @@
 "use client";
 
-import { Reveal } from "@/components/motion/reveal";
 import { usePlanner } from "@/components/planner-provider";
 import { GhostWord } from "@/components/ui/ghost-word";
 import { HeroScene } from "@/components/ui/illustrations";
@@ -25,7 +24,7 @@ export function Hero() {
       </GhostWord>
 
       <div className="above-ghost mx-auto grid max-w-shell gap-10 px-gutter pb-section pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pt-20">
-        <Reveal stagger className="flex min-w-0 flex-col gap-7">
+        <div className="flex min-w-0 flex-col gap-7">
           <p className="flex items-center gap-3 text-eyebrow font-bold uppercase tracking-[0.18em] text-brand-light">
             <span className="skew-rule h-[5px] w-[34px]" />
             Stavanger · siden 2012
@@ -52,7 +51,7 @@ export function Hero() {
               Se våre prosjekter
             </a>
           </div>
-        </Reveal>
+        </div>
 
         {/* Framed so the artwork reads as a composed panel, not loose line art. */}
         <div className="relative hidden aspect-[13/14] w-full overflow-hidden border border-line/70 md:block">

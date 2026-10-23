@@ -2,66 +2,83 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
 type RevealProps = {
   children: ReactNode;
-  /** Staggers the element's direct children instead of the element itself. */
+  /** Reveals the direct children in sequence instead of the block as a whole. */
   stagger?: boolean;
-  /** Seconds to wait before starting. */
-  delay?: number;
+  /**
+   * Element to render. With `stagger`, this must be the element that directly
+   * holds the items: an extra wrapper in between staggers one block instead of
+   * each item.
+   */
+  as?: "div" | "ol" | "ul";
   className?: string;
 };
+
+const STEP_MS = 70;
 
 /**
  * Fades and lifts content as it scrolls into view.
  *
- * Content renders visible by default, so it stays readable if this never runs.
- * gsap.from only hides it once the animation is actually set up. Everything is
- * built inside a gsap.context so React Strict Mode's double mount cannot leave
- * a second copy of the tween or its ScrollTrigger behind.
+ * Three rules keep this from costing more than it gives:
+ *
+ * 1. Nothing is hidden in the markup. The hidden state is applied by this
+ *    effect, so if the script never runs the content is simply visible.
+ * 2. Anything already on screen when the effect runs is skipped entirely.
+ *    Hiding something the visitor is already looking at causes a flash and
+ *    can invalidate the LCP element.
+ * 3. Under prefers-reduced-motion nothing is touched at all.
  */
-export function Reveal({ children, stagger = false, delay = 0, className }: RevealProps) {
-  const container = useRef<HTMLDivElement>(null);
+export function Reveal({ children, stagger = false, as = "div", className }: RevealProps) {
+  const container = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const element = container.current;
     if (!element) return;
 
-    const context = gsap.context(() => {
-      // Respect the OS setting: no movement, nothing hidden.
-      const media = gsap.matchMedia();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        const targets = stagger ? Array.from(element.children) : element;
+    // Already visible: leave it alone rather than hiding and re-showing it.
+    const box = element.getBoundingClientRect();
+    if (box.top < window.innerHeight) return;
 
-        gsap.from(targets, {
-          opacity: 0,
-          y: 24,
-          duration: 0.55,
-          ease: "power2.out",
-          delay,
-          stagger: stagger ? 0.08 : 0,
-          scrollTrigger: {
-            trigger: element,
-            start: "top 88%",
-            once: true,
-          },
+    const targets: HTMLElement[] = stagger
+      ? (Array.from(element.children) as HTMLElement[])
+      : [element];
+
+    targets.forEach((target, index) => {
+      target.dataset.reveal = "pending";
+      if (stagger) target.style.transitionDelay = `${index * STEP_MS}ms`;
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        targets.forEach((target) => {
+          target.dataset.reveal = "shown";
         });
+        observer.disconnect();
+      },
+      { rootMargin: "0px 0px -12% 0px" },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      // Leave nothing hidden behind if this unmounts mid-flight.
+      targets.forEach((target) => {
+        delete target.dataset.reveal;
+        target.style.transitionDelay = "";
       });
+    };
+  }, [stagger]);
 
-      return () => media.revert();
-    }, element);
-
-    return () => context.revert();
-  }, [stagger, delay]);
+  const Tag = as;
 
   return (
-    <div ref={container} className={className}>
+    <Tag ref={container as never} className={className}>
       {children}
-    </div>
+    </Tag>
   );
 }
