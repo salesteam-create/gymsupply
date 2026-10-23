@@ -40,7 +40,7 @@ export default function OmOssPage() {
       <PageHero
         eyebrow="Om Gym Supply"
         title="Erfaring, kunnskap og ekte engasjement"
-        lead={`Siden ${business.foundingYear} har vi hjulpet bedrifter, treningssentre, offentlige aktører og privatpersoner i Stavanger-regionen med å skape bedre treningsmiljøer.`}
+        lead={`Siden ${business.foundingYear} har vi hjulpet bedrifter, treningssentre, offentlige aktører og privatpersoner i Stavanger og nærområdene med å skape bedre treningsmiljøer.`}
         imageLabel="Teamet"
       />
 

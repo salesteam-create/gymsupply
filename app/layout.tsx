@@ -15,7 +15,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 const description =
-  "Gym Supply leverer treningsutstyr, planlegging, montering og service til bedrifter, treningssentre, offentlig sektor og hjemmegym i Stavanger-regionen.";
+  "Gym Supply leverer treningsutstyr, planlegging, montering og service til bedrifter, treningssentre, offentlig sektor og hjemmegym i Stavanger og nærområdene.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

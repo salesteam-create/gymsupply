@@ -6,13 +6,13 @@ import { business, telHref } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-charcoal text-paper">
+    <footer className="border-t border-charcoal-line bg-charcoal text-paper">
       <div className="mx-auto grid max-w-shell gap-12 px-gutter py-section sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo />
           <p className="m-0 mt-5 max-w-[38ch] text-sm leading-[1.75] text-mist">
             Treningsutstyr, planlegging og montering for bedrifter, offentlig sektor,
-            treningssentre og private i Stavanger-regionen.
+            treningssentre og private i Stavanger og nærområdene.
           </p>
         </div>
 

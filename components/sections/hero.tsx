@@ -51,7 +51,7 @@ export function Hero() {
             Stavanger, Norge
           </p>
           <p className="m-0 mt-1.5 max-w-[26ch] text-sm leading-[1.6] text-paper/70">
-            Vi leverer og monterer treningsmiljøer i Stavanger-regionen.
+            Vi leverer og monterer treningsmiljøer i Stavanger og nærområdene.
           </p>
         </div>
       </div>

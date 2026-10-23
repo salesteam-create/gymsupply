@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Faq } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
 import { PageHero } from "@/components/sections/page-hero";
 import { Media } from "@/components/ui/media";
@@ -46,6 +47,7 @@ export default function TjenesterPage() {
         </div>
       </section>
 
+      <Faq />
       <FinalCta />
     </>
   );

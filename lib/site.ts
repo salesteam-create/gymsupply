@@ -24,11 +24,12 @@ export const business = {
   postalCode: "4031",
   city: "Stavanger",
   country: "NO",
-  areaServed: "Stavanger-regionen",
+  /** The company states local presence in "Stavanger og nærområdene". */
+  areaServed: "Stavanger og nærområdene",
 
-  /** Set these to publish working contact routes. See README. */
-  phone: null as string | null,
-  email: null as string | null,
+  /** Published on gymsupply.no/contact. */
+  phone: "911 04 030" as string | null,
+  email: "post@gymsupply.no" as string | null,
 } as const;
 
 /** Digits only, for the href on a tel: link. */

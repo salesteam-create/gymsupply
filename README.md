@@ -81,16 +81,42 @@ The planner on the home page passes its selection to the form through the URL
 (`/kontakt?segment=hjem&storrelse=l`), since the two are now separate pages.
 Fields adapt: a private buyer never sees the organisation field.
 
+## Verified business facts
+
+Scraped from gymsupply.no on 23 October 2026 and from the public company
+register. `lib/site.ts`, `lib/content.ts` and `lib/testimonials.ts` hold only
+facts from those sources.
+
+| Fact | Source |
+|---|---|
+| Established 2012, Stavanger | gymsupply.no homepage |
+| Phone 911 04 030, post@gymsupply.no | gymsupply.no/contact |
+| Services: rådgivning, utstyr, installasjon, serviceavtale | gymsupply.no/services |
+| "lokal tilstedeværelse i Stavanger og nærområdene" | gymsupply.no homepage |
+| Three customer testimonials | gymsupply.no homepage |
+| Forusparken 32, org.nr. 912 979 113 | company register |
+
+Two things the site does **not** publish, so nothing here claims them:
+
+- **No product catalogue, prices or stock.** The equipment section explains
+  what we help select and routes to advice, never to a basket.
+- **No manufacturer or supplier relationships.** There is no brand strip;
+  `components/sections/selection-approach.tsx` explains how equipment is
+  chosen instead. Replace it with a brand strip only once the relationships
+  are confirmed in writing.
+
+Coverage is "Stavanger og nærområdene" everywhere. Do not widen it to
+nationwide without confirmation.
+
 ## Still to do
 
 - **Photographs.** Hero, four solution cards, process, team, service steps and
   projects. Use real installations; the copy says these are rooms Gym Supply
   delivered.
-- **Phone and email** in `lib/site.ts`. Until set, no `tel:` or `mailto:`
-  links render anywhere.
-- **Real projects** in `app/prosjekter/page.tsx`, with permission to name the
-  customer. The page shows categories until then and never presents an
-  unnamed card as a case study.
+- **Real projects** in `lib/projects.ts`, with permission to name the
+  customer, photographs and the detail that makes one useful to a reader with
+  a similar space. While it is empty the spotlight and the projects page offer
+  references on request instead of showing placeholder cards.
 - **A form endpoint.**
 - **Confirm the founding year**: the company states 2012, the register records
   registration in 2013.
