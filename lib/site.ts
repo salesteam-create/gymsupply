@@ -1,7 +1,11 @@
 /**
- * Facts that appear in metadata and structured data. Everything here is
- * checkable in the public company register; unverified details stay out.
- * See README for what the business still needs to confirm.
+ * Facts that appear in metadata, structured data and contact routes.
+ * Everything here is checkable in the public company register; unverified
+ * details stay null rather than being guessed at.
+ *
+ * Fill phone and email in and the site renders real tel: and mailto: links
+ * everywhere. While they are null those routes are omitted entirely, because
+ * showing a visitor a placeholder costs more trust than showing nothing.
  */
 
 const repository = process.env.GITHUB_REPOSITORY?.split("/")[1];
@@ -21,4 +25,15 @@ export const business = {
   city: "Stavanger",
   country: "NO",
   areaServed: "Stavanger-regionen",
+
+  /** Set these to publish working contact routes. See README. */
+  phone: null as string | null,
+  email: null as string | null,
 } as const;
+
+/** Digits only, for the href on a tel: link. */
+export function telHref(phone: string): string {
+  return `tel:${phone.replace(/[^+\d]/g, "")}`;
+}
+
+export const hasDirectContact = Boolean(business.phone || business.email);

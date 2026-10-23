@@ -145,6 +145,23 @@ in 2013, so confirm which to publish.
 Structured data is `LocalBusiness` only. It carries no ratings, reviews or
 prices, because none are verified.
 
+## Contact details and trust content
+
+`lib/site.ts` and `lib/testimonials.ts` drive everything a visitor is shown
+about the business. Both follow the same rule: unverified content is omitted,
+never shown as a placeholder.
+
+- Set `business.phone` and `business.email` and working `tel:` and `mailto:`
+  links appear in the contact section and the footer. While they are null,
+  those routes render nothing at all.
+- Add an entry to `testimonials` and the references section appears. While the
+  list is empty the whole section is left out of the page.
+- Project captions only show a customer and place once `client` is set on the
+  entry in `components/sections/projects.tsx`.
+
+An empty frame or a `[PLACEHOLDER]` on a live page costs more trust than
+leaving the content out, which is why none of these render half-filled.
+
 ## The enquiry form
 
 The form posts JSON to `NEXT_PUBLIC_FORM_ENDPOINT`. Until that is set it does
@@ -153,7 +170,12 @@ connected and points them at phone and email. Set the variable to a form
 service or CRM endpoint to make it live, then test a real submission.
 
 Selections made in the planner are carried into the form, so a visitor does
-not answer the same question twice.
+not answer the same question twice: the segment sets the project type and the
+room size fills the size field.
+
+Fields adapt to who is enquiring. A private buyer never sees the organisation
+field; business and public-sector buyers get it as a required field. That is
+six fields for a home gym enquiry and seven for an organisation.
 
 ## Still to do
 

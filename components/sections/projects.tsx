@@ -10,7 +10,8 @@ import { SkewRule } from "@/components/ui/skew-rule";
 
 type Project = {
   title: string;
-  client: string;
+  /** Customer and place, once they have agreed to be named. Omitted until. */
+  client?: string;
   /** Illustration shown until a real photo is dropped in. */
   Illustration: (props: { className?: string }) => React.ReactElement;
   /**
@@ -24,21 +25,9 @@ type Project = {
 };
 
 const projects: Project[] = [
-  {
-    title: "Bedriftsgym",
-    client: "[Kunde, sted]",
-    Illustration: CorporateGymIllustration,
-  },
-  {
-    title: "Offentlig sektor",
-    client: "[Kunde, sted]",
-    Illustration: PublicSectorIllustration,
-  },
-  {
-    title: "Hjemmegym",
-    client: "[Kunde, sted]",
-    Illustration: HomeGymIllustration,
-  },
+  { title: "Bedriftsgym", Illustration: CorporateGymIllustration },
+  { title: "Offentlig sektor", Illustration: PublicSectorIllustration },
+  { title: "Hjemmegym", Illustration: HomeGymIllustration },
 ];
 
 export function Projects() {
@@ -78,7 +67,9 @@ export function Projects() {
               </div>
               <figcaption className="px-1 pt-[22px]">
                 <div className="text-[17px] font-extrabold italic uppercase">{title}</div>
-                <div className="mt-1 text-[13px] text-body">{client}</div>
+                {client ? (
+                  <div className="mt-1 text-[13px] text-body">{client}</div>
+                ) : null}
                 <SkewRule className="mt-3 h-1 w-[26px]" />
               </figcaption>
             </figure>
@@ -87,7 +78,7 @@ export function Projects() {
 
         <div className="mt-10 flex justify-center sm:mt-[52px]">
           <SkewCta href="#kontakt" className="px-7 py-4 text-sm">
-            Alle prosjekter
+            Snakk med oss om et lignende prosjekt
           </SkewCta>
         </div>
       </div>

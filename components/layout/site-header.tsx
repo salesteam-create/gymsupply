@@ -15,7 +15,7 @@ const navLinks = [
 function Wordmark() {
   return (
     <a href="#top" className="flex min-h-11 flex-col justify-center gap-0.5 text-paper no-underline">
-      <span className="text-[22px] font-black italic leading-none tracking-[0.01em] sm:text-[30px]">
+      <span className="whitespace-nowrap text-[22px] font-black italic leading-none tracking-[0.01em] sm:text-[30px]">
         GYM SUPPLY
       </span>
       <span className="skew-rule h-1 w-10 sm:w-14" />
@@ -84,16 +84,24 @@ export function SiteHeader() {
           </SkewCta>
         </div>
 
-        <button
+        <div className="flex items-center gap-2 lg:hidden">
+          <div className="hidden min-[400px]:block">
+            <SkewCta href="#kontakt" withArrow={false} className="px-4 py-2.5 text-[13px]">
+              Book befaring
+            </SkewCta>
+          </div>
+
+          <button
           type="button"
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-controls="mobilmeny"
           aria-label={open ? "Lukk meny" : "Åpne meny"}
-          className="flex size-11 cursor-pointer items-center justify-center border-0 bg-transparent text-paper lg:hidden"
+          className="flex size-11 cursor-pointer items-center justify-center border-0 bg-transparent text-paper"
         >
           <MenuIcon open={open} />
-        </button>
+          </button>
+        </div>
       </nav>
 
       {/* Collapsed menu. Hidden from assistive tech when closed. */}

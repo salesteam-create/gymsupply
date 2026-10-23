@@ -1,3 +1,5 @@
+import { business, telHref } from "@/lib/site";
+
 const shortcuts = [
   { href: "#tjenester", label: "Tjenester" },
   { href: "#planlegger", label: "Planlegg gymmet" },
@@ -35,11 +37,26 @@ export function SiteFooter() {
         <div className="flex flex-col gap-2.5 text-sm text-body">
           <h2 className="m-0 text-[15px] font-extrabold italic text-ink">Gym Supply AS</h2>
           <address className="not-italic leading-[1.7]">
-            Forusparken 32, c/o CrossFit Centrum
+            {business.street}
             <br />
-            4031 Stavanger
+            {business.postalCode} {business.city}
           </address>
-          <span>[TELEFON] · [E-POST]</span>
+          {business.phone ? (
+            <a
+              href={telHref(business.phone)}
+              className="inline-flex min-h-11 items-center text-ink no-underline hover:text-brand"
+            >
+              {business.phone}
+            </a>
+          ) : null}
+          {business.email ? (
+            <a
+              href={`mailto:${business.email}`}
+              className="inline-flex min-h-11 items-center text-ink no-underline hover:text-brand"
+            >
+              {business.email}
+            </a>
+          ) : null}
           <span>Org.nr. 912 979 113</span>
         </div>
       </div>

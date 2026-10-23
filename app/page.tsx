@@ -7,6 +7,7 @@ import { Planner } from "@/components/sections/planner";
 import { Projects } from "@/components/sections/projects";
 import { Services } from "@/components/sections/services";
 import { Testimonial } from "@/components/sections/testimonial";
+import { testimonials } from "@/lib/testimonials";
 import { WhyUs } from "@/components/sections/why-us";
 
 export default function HomePage() {
@@ -19,7 +20,7 @@ export default function HomePage() {
         <Planner />
         <Projects />
         <WhyUs />
-        <Testimonial />
+        {testimonials.length > 0 ? <Testimonial /> : null}
         <Contact />
       </main>
       <SiteFooter />
