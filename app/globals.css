@@ -31,6 +31,23 @@
   --container-shell: 1320px;
 }
 
+/* Anchor jumps must clear the sticky header. */
+html {
+  scroll-padding-top: 84px;
+}
+
+@media (min-width: 640px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   margin: 0;
   background: var(--color-ink);

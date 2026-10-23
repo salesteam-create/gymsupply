@@ -8,13 +8,13 @@ export function Testimonial() {
     <section id="om" className="relative overflow-hidden bg-ink">
       <GhostWord className="left-5 top-[60px] text-[clamp(90px,11vw,170px)]">KUNDER</GhostWord>
 
-      <div className="relative mx-auto max-w-shell px-8 pb-[104px] pt-[120px]">
+      <div className="relative mx-auto max-w-shell px-5 pb-16 pt-16 sm:px-8 sm:pb-[104px] sm:pt-[120px]">
         <SkewRule className="mb-[18px] h-1.5 w-11" />
         <h2 className="mb-14 mt-0 text-[clamp(38px,4.6vw,64px)] font-black italic uppercase leading-[1.02]">
           Hva kundene sier
         </h2>
 
-        <div className="flex flex-wrap items-center gap-14">
+        <div className="flex flex-wrap items-center gap-10 lg:gap-14">
           <div className="relative h-80 min-w-0 flex-[0_1_380px] bg-brand">
             {/* Offset outline frame behind the portrait. */}
             <div className="absolute -bottom-[18px] -right-[18px] left-[18px] top-[18px] border-2 border-brand" />

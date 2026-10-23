@@ -98,6 +98,21 @@ To use a real delivery photo, put the file in `public/projects/` and swap the
 pointing at it. Keep the 420px frame so the row stays aligned. The static
 export runs without the image optimiser, so a plain `<img>` is fine.
 
+## Responsive behaviour
+
+The full nav shows from `lg` (1024px) up. Below that the header collapses to a
+wordmark and a menu button, which keeps the sticky bar at 76px on a phone
+instead of wrapping to three rows. The panel closes on link tap and on Escape.
+
+Section padding steps down at `sm`, and the project cards shrink from 420px to
+260px tall, so the page is about a third shorter on a phone.
+
+`scroll-padding-top` in `globals.css` keeps anchor jumps clear of the sticky
+header. If the header height changes, change that value too.
+
+Checked at 320, 360, 390, 414, 768, 1024, 1280 and 1440px: no horizontal
+overflow, and every tap target is at least 44px at phone and tablet widths.
+
 ## Still to do
 
 - Replace the content placeholders: `[TELEFON]`, `[E-POST]`, `[ADRESSE]`,
@@ -107,6 +122,3 @@ export runs without the image optimiser, so a plain `<img>` is fine.
   to publish.
 - The contact form has no backend. `handleSubmit` in
   `components/sections/contact.tsx` only switches to the confirmation state.
-- The header shows every nav link at once and is sticky, so on a narrow phone
-  it wraps to three rows and takes up a lot of the screen. It needs a proper
-  mobile menu.

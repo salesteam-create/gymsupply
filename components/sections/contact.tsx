@@ -26,26 +26,32 @@ export function Contact() {
         KONTAKT
       </GhostWord>
 
-      <div className="relative mx-auto flex max-w-shell flex-wrap gap-14 px-8 py-28">
+      <div className="relative mx-auto flex max-w-shell flex-wrap gap-10 px-5 py-16 sm:px-8 sm:py-28 lg:gap-14">
         <div className="flex min-w-0 flex-1 basis-[420px] flex-col gap-[22px]">
           <SkewRule className="h-1.5 w-11" />
-          <h2 className="m-0 text-[clamp(44px,5.6vw,80px)] font-black italic uppercase leading-none">
+          <h2 className="m-0 text-[clamp(34px,5.6vw,80px)] font-black italic uppercase leading-[1.05] sm:leading-none">
             Klar for å <span className="text-brand-bright">bygge?</span>
           </h2>
           <p className="m-0 max-w-[440px] text-base leading-[1.7] text-muted">
             Fortell oss litt om rommet og behovet. Vi tar kontakt og avtaler en befaring.
           </p>
           <div className="flex flex-col gap-2 font-semibold">
-            <a href="#kontakt" className="text-paper hover:text-brand-light">
+            <a
+              href="#kontakt"
+              className="inline-flex min-h-11 items-center text-paper hover:text-brand-light"
+            >
               [TELEFON]
             </a>
-            <a href="#kontakt" className="text-paper hover:text-brand-light">
+            <a
+              href="#kontakt"
+              className="inline-flex min-h-11 items-center text-paper hover:text-brand-light"
+            >
               [E-POST]
             </a>
           </div>
         </div>
 
-        <div className="min-w-0 flex-1 basis-[520px] bg-ink-raised p-9">
+        <div className="min-w-0 flex-1 basis-[520px] bg-ink-raised p-5 sm:p-9">
           {sent ? (
             <div className="flex min-h-[360px] flex-col justify-center gap-4">
               <p className="m-0 text-[54px] font-black italic uppercase leading-none text-brand-bright">

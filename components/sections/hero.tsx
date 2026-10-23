@@ -23,14 +23,14 @@ export function Hero() {
         SUPPLY
       </GhostWord>
 
-      <div className="relative mx-auto flex max-w-shell flex-wrap items-center gap-10 px-8 pb-[72px] pt-24">
+      <div className="relative mx-auto flex max-w-shell flex-wrap items-center gap-10 px-5 pb-12 pt-14 sm:px-8 sm:pb-[72px] sm:pt-24">
         <div className="flex min-w-0 flex-1 basis-[600px] flex-col gap-[26px]">
           <p className="flex items-center gap-3 text-[13px] font-bold uppercase tracking-[0.16em] text-brand-light">
             <span className="skew-rule h-[5px] w-[34px]" />
             Stavanger · siden 2012
           </p>
 
-          <h1 className="m-0 text-[clamp(52px,7.2vw,108px)] font-black italic uppercase leading-[0.98] tracking-[-0.01em]">
+          <h1 className="m-0 text-[clamp(38px,7.2vw,108px)] font-black italic uppercase leading-[1.02] tracking-[-0.01em] sm:leading-[0.98]">
             Vi bygger rom folk vil <span className="text-brand-bright">trene i</span>
           </h1>
 
@@ -45,7 +45,7 @@ export function Hero() {
             </SkewCta>
             <a
               href="#prosjekter"
-              className="border-b-2 border-brand pb-1 text-[15px] font-bold text-paper no-underline"
+              className="inline-flex min-h-11 items-center border-b-2 border-brand text-[15px] font-bold text-paper no-underline"
             >
               Se prosjekter
             </a>
@@ -58,7 +58,7 @@ export function Hero() {
       </div>
 
       {/* Audience picker. Shares its choice with the planner section. */}
-      <div className="relative mx-auto max-w-shell px-14 pb-16">
+      <div className="relative mx-auto max-w-shell px-5 pb-12 sm:px-8 lg:px-14 lg:pb-16">
         <p className="m-0 mb-[18px] min-h-[26px] text-[15px] text-muted">{active.line}</p>
 
         <div

@@ -22,7 +22,7 @@ const reasons = [
 export function WhyUs() {
   return (
     <section className="bg-paper text-ink">
-      <div className="mx-auto grid max-w-shell grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-12 px-8 py-24">
+      <div className="mx-auto grid max-w-shell grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-10 px-5 py-14 sm:px-8 sm:py-24 lg:gap-12">
         {reasons.map(({ Icon, title, body }) => (
           <div key={title} className="flex flex-col gap-[14px]">
             <Icon className="text-brand" />

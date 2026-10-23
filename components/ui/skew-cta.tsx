@@ -10,7 +10,9 @@ type SkewCtaProps = {
   withArrow?: boolean;
   arrowSize?: number;
   className?: string;
-} & Omit<ComponentProps<"button">, "className" | "children">;
+  /** Applies to either element, so links can close the mobile menu. */
+  onClick?: () => void;
+} & Omit<ComponentProps<"button">, "className" | "children" | "onClick">;
 
 /**
  * The skewed brand call to action. The outer element leans left and the label
@@ -22,6 +24,7 @@ export function SkewCta({
   withArrow,
   arrowSize = 14,
   className = "",
+  onClick,
   ...buttonProps
 }: SkewCtaProps) {
   const showArrow = withArrow ?? Boolean(href);
@@ -34,14 +37,19 @@ export function SkewCta({
 
   if (href) {
     return (
-      <a href={href} className={`skew-cta ${className}`}>
+      <a href={href} onClick={onClick} className={`skew-cta ${className}`}>
         {label}
       </a>
     );
   }
 
   return (
-    <button type="button" className={`skew-cta ${className}`} {...buttonProps}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`skew-cta ${className}`}
+      {...buttonProps}
+    >
       {label}
     </button>
   );

@@ -18,7 +18,7 @@ export function Planner() {
         PLANLEGG
       </GhostWord>
 
-      <div className="relative mx-auto flex max-w-shell flex-wrap gap-14 px-8 py-28">
+      <div className="relative mx-auto flex max-w-shell flex-wrap gap-10 px-5 py-16 sm:px-8 sm:py-28 lg:gap-14">
         <div className="flex min-w-0 flex-1 basis-[460px] flex-col gap-[22px]">
           <SkewRule className="h-1.5 w-11" />
           <h2 className="m-0 text-[clamp(38px,4.6vw,64px)] font-black italic uppercase leading-[1.02]">
@@ -93,7 +93,7 @@ export function Planner() {
         </div>
 
         {/* Resulting example layout. */}
-        <div className="flex min-w-0 flex-1 basis-[500px] flex-col gap-[22px] border-[1.5px] border-brand bg-ink-raised p-9">
+        <div className="flex min-w-0 flex-1 basis-[500px] flex-col gap-[22px] border-[1.5px] border-brand bg-ink-raised p-5 sm:p-9">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-dim">
               Eksempel på oppsett
